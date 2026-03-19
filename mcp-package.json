@@ -1,0 +1,21 @@
+{
+  "name": "rowan-mcp-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Rowan MCP server for Lightning.ai deployment",
+  "type": "module",
+  "main": "mcp-server.js",
+  "scripts": {
+    "start:mcp": "node mcp-server.js",
+    "dev:mcp": "node --watch mcp-server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/node": "latest",
+    "@modelcontextprotocol/server": "latest",
+    "express": "latest",
+    "zod": "latest"
+  }
+}
