@@ -1,0 +1,21 @@
+{
+  "name": "rowan-mcp-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Rowan MCP server for Lightning.ai deployment with pinned MCP packages",
+  "type": "module",
+  "main": "mcp-server-pinned.js",
+  "scripts": {
+    "start:mcp:pinned": "node mcp-server-pinned.js",
+    "dev:mcp:pinned": "node --watch mcp-server-pinned.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/node": "2.0.0-alpha.0",
+    "@modelcontextprotocol/server": "2.0.0-alpha.0",
+    "express": "5.1.0",
+    "zod": "4.1.5"
+  }
+}
