@@ -1,0 +1,4 @@
+interface:
+  display_name: "App Builder"
+  short_description: "Plan web, mobile, and no-code app MVPs"
+  default_prompt: "Use $app-builder to scope screens, flows, and the right stack for a web, iOS, Android, or no-code app MVP."

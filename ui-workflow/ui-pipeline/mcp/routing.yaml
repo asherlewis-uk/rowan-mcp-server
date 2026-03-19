@@ -1,0 +1,81 @@
+# UI Pipeline — MCP Agent Routing Table
+# Format: route-name: agent | [agent, agent] (sequential)
+#         { parallel: [agent, agent] } = fan-out (run simultaneously)
+# Schemas for each handoff: see mcp/schemas/
+
+# ─── DEFAULTS ──────────────────────────────────────────────────────────────────
+
+default:
+  - stitch
+  - magic
+  - architect
+
+# ─── SINGLE-AGENT SHORTCUTS ────────────────────────────────────────────────────
+
+ui-design:      stitch          # brief → theme.json + layout JSON
+component-gen:  magic           # layout JSON → TSX component
+app-wiring:     architect       # components → wired app + routes
+test-gen:       test            # component path → .test.tsx + e2e spec
+a11y-audit:     a11y            # running app → WCAG violation report
+perf-audit:     perf            # build output → CWV + bundle report
+story-gen:      docs            # component path → .stories.tsx
+seo-inject:     seo             # page route → <PageMeta> + JSON-LD
+i18n-extract:   i18n            # src/ → locale keys + rewritten components
+design-extract: stitch          # image/URL → design context JSON
+variant-gen:    magic           # existing component → N visual variants
+physics-scene:  magic           # spec → Matter.js / Nano Banana scene
+
+# ─── MULTI-STEP PIPELINES ──────────────────────────────────────────────────────
+
+# Design a screen from a brief all the way to wired, tested, documented code
+full-pipeline:
+  - stitch                        # 1. Generate layout + tokens
+  - magic                         # 2. Generate TSX components
+  - architect                     # 3. Wire routes + providers
+  - { parallel: [test, docs] }    # 4. Fan-out: tests + stories in parallel
+  - { parallel: [a11y, perf] }    # 5. Fan-out: audits in parallel
+  - seo                           # 6. Inject metadata
+
+# Iterate on a component: fix code + re-audit without re-designing
+component-patch:
+  - magic
+  - { parallel: [test, a11y] }
+
+# Upgrade a page with i18n support
+i18n-pipeline:
+  - i18n
+  - test
+  - a11y
+
+# Redesign tokens only (no new components)
+theme-update:
+  - stitch
+  - a11y
+  - docs
+
+# Quality gate: audit only, no generation
+qa-gate:
+  - { parallel: [a11y, perf] }
+  - seo
+
+# ─── AGENT REGISTRY ────────────────────────────────────────────────────────────
+
+agents:
+  stitch:       mcp/servers/stitch-mcp.json
+  magic:        mcp/servers/magic-mcp.json
+  nano-banana:  mcp/servers/nano-banana-mcp.json
+  playwright:   mcp/servers/playwright-mcp.json
+  architect:    mcp/prompts/architect.system.md
+  test:         mcp/prompts/test.system.md
+  a11y:         mcp/prompts/a11y.system.md
+  perf:         mcp/prompts/perf.system.md
+  seo:          mcp/prompts/seo.system.md
+  docs:         mcp/prompts/docs.system.md
+  i18n:         mcp/prompts/i18n.system.md
+
+# ─── HANDOFF SCHEMAS ──────────────────────────────────────────────────────────
+
+schemas:
+  stitch-output:    mcp/schemas/stitch-output.schema.json
+  magic-output:     mcp/schemas/magic-output.schema.json
+  architect-output: mcp/schemas/architect-output.schema.json

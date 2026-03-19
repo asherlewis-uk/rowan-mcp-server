@@ -1,0 +1,16 @@
+{
+  "name": "Microsoft Playwright MCP",
+  "command": "npx",
+  "args": ["-y", "@playwright/mcp@latest"],
+  "env": {},
+  "description": "Browser automation via Playwright. Powers e2e tests, visual regression, Lighthouse audits, and axe-core a11y scans against the running dev server.",
+  "tools": [
+    "browser_navigate",
+    "browser_screenshot",
+    "browser_click",
+    "browser_type",
+    "browser_evaluate",
+    "browser_network_requests",
+    "browser_console_messages"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "21st.dev Magic MCP",
+  "command": "npx",
+  "args": ["-y", "@21st-dev/magic@latest"],
+  "env": {
+    "API_KEY": "${env:MAGIC_API_KEY}"
+  },
+  "tools": ["generate_component", "generate_ui_variants"]
+}

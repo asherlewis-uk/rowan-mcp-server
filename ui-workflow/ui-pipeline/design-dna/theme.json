@@ -1,0 +1,115 @@
+{
+  "colors": {
+    "brand": {
+      "50":  "#fff0f0",
+      "100": "#ffd6d6",
+      "200": "#ffadad",
+      "300": "#ff8585",
+      "400": "#ff7070",
+      "500": "#ff6b6b",
+      "600": "#d94f4f",
+      "700": "#b33030",
+      "800": "#8c1c1c",
+      "900": "#5e0a0a"
+    },
+    "neutral": {
+      "0":   "#ffffff",
+      "50":  "#f9fafb",
+      "100": "#f3f4f6",
+      "200": "#e5e7eb",
+      "300": "#d1d5db",
+      "400": "#9ca3af",
+      "500": "#6b7280",
+      "600": "#4b5563",
+      "700": "#374151",
+      "800": "#1f2937",
+      "900": "#111827",
+      "950": "#030712"
+    }
+  },
+  "semanticTokens": {
+    "colors": {
+      "text.primary":    { "default": "neutral.900",  "_dark": "neutral.50"  },
+      "text.secondary":  { "default": "neutral.600",  "_dark": "neutral.400" },
+      "text.accent":     { "default": "brand.700",    "_dark": "brand.400"   },
+      "text.on-accent":  { "default": "neutral.0",    "_dark": "neutral.0"   },
+      "bg.canvas":       { "default": "neutral.50",   "_dark": "neutral.950" },
+      "bg.surface":      { "default": "neutral.0",    "_dark": "neutral.900" },
+      "bg.accent":       { "default": "brand.500",    "_dark": "brand.500"   },
+      "bg.accent-hover": { "default": "brand.600",    "_dark": "brand.400"   },
+      "border.default":  { "default": "neutral.200",  "_dark": "neutral.700" },
+      "border.accent":   { "default": "brand.500",    "_dark": "brand.400"   }
+    }
+  },
+  "fonts": {
+    "heading": "Inter, system-ui, sans-serif",
+    "body": "Inter, system-ui, sans-serif",
+    "mono": "JetBrains Mono, Fira Code, monospace"
+  },
+  "fontSizes": {
+    "xs": "0.75rem",
+    "sm": "0.875rem",
+    "md": "1rem",
+    "lg": "1.125rem",
+    "xl": "1.25rem",
+    "2xl": "1.5rem",
+    "3xl": "1.875rem",
+    "4xl": "2.25rem",
+    "5xl": "3rem",
+    "6xl": "3.75rem"
+  },
+  "space": {
+    "1":  "0.25rem",
+    "2":  "0.5rem",
+    "3":  "0.75rem",
+    "4":  "1rem",
+    "6":  "1.5rem",
+    "8":  "2rem",
+    "12": "3rem",
+    "16": "4rem",
+    "24": "6rem",
+    "32": "8rem"
+  },
+  "breakpoints": {
+    "sm":  "30em",
+    "md":  "48em",
+    "lg":  "62em",
+    "xl":  "80em",
+    "2xl": "96em"
+  },
+  "radii": {
+    "none": "0",
+    "sm":   "6px",
+    "md":   "12px",
+    "lg":   "16px",
+    "xl":   "24px",
+    "full": "9999px"
+  },
+  "shadows": {
+    "xs":    "0 1px 3px rgba(0,0,0,0.12)",
+    "sm":    "0 2px 8px rgba(0,0,0,0.1)",
+    "md":    "0 4px 16px rgba(0,0,0,0.12)",
+    "brand": "0 4px 24px rgba(255,107,107,0.35)",
+    "lg":    "0 8px 32px rgba(0,0,0,0.16)"
+  },
+  "motion": {
+    "durations": {
+      "instant": "50ms",
+      "fast":    "150ms",
+      "normal":  "250ms",
+      "slow":    "400ms",
+      "slower":  "700ms"
+    },
+    "easings": {
+      "ease-in":     "cubic-bezier(0.4, 0, 1, 1)",
+      "ease-out":    "cubic-bezier(0, 0, 0.2, 1)",
+      "ease-in-out": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "spring":      "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+      "bounce":      "cubic-bezier(0.34, 1.56, 0.64, 1)"
+    }
+  },
+  "config": {
+    "initialColorMode": "dark",
+    "useSystemColorMode": true
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Google Stitch MCP",
+  "command": "npx",
+  "args": ["-y", "stitch-mcp"],
+  "env": {
+    "STITCH_API_KEY": "${env:STITCH_API_KEY}"
+  },
+  "tools": ["generate_screen", "extract_design_context"]
+}

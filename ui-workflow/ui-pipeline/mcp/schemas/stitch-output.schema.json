@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "stitch-output",
+  "title": "Stitch Agent Output",
+  "description": "The structured payload Stitch emits after generate_screen or extract_design_context. Magic consumes this directly.",
+  "type": "object",
+  "required": ["traceId", "agentVersion", "layout", "tokens", "handoff"],
+  "properties": {
+    "traceId": {
+      "type": "string",
+      "description": "UUID shared across the full pipeline run for tracing."
+    },
+    "agentVersion": { "type": "string", "example": "stitch@1.2.0" },
+    "layout": {
+      "type": "object",
+      "required": ["sections"],
+      "properties": {
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "order", "type"],
+            "properties": {
+              "name":        { "type": "string", "example": "HeroSection" },
+              "order":       { "type": "integer", "minimum": 0 },
+              "type":        { "type": "string", "enum": ["hero", "features", "cta", "testimonials", "pricing", "footer", "nav", "custom"] },
+              "grid":        { "type": "string", "example": "1-column" },
+              "breakpoints": { "type": "object", "example": { "base": "stack", "md": "2-col" } },
+              "contentHints": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "pageTitle": { "type": "string" },
+        "designNotes": { "type": "string" }
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "properties": {
+        "colors":      { "type": "object" },
+        "fonts":       { "type": "object" },
+        "spacing":     { "type": "object" },
+        "motion":      { "type": "object" }
+      }
+    },
+    "moodboardPath": { "type": "string", "example": "design-dna/moodboards/home.png" },
+    "errors": {
+      "type": "array",
+      "items": { "type": "object", "properties": { "code": { "type": "string" }, "message": { "type": "string" } } }
+    },
+    "handoff": { "type": "string", "enum": ["magic", "architect", "a11y", "human"] }
+  }
+}

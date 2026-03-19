@@ -1,0 +1,10 @@
+{
+  "name": "Nano Banana 2 MCP",
+  "command": "npx",
+  "args": ["-y", "nano-banana-mcp"],
+  "env": {
+    "NANO_BANANA_API_KEY": "${env:NANO_BANANA_API_KEY}"
+  },
+  "description": "Physics-based UI animation layer (Matter.js). Provides gravity, collision, and spring animations for React components.",
+  "tools": ["spawn_physics_scene", "attach_body", "apply_force"]
+}

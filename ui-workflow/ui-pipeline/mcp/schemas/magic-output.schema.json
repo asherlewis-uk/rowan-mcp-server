@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "magic-output",
+  "title": "Magic Agent Output",
+  "description": "The structured payload Magic emits after generating TSX components. Architect consumes this.",
+  "type": "object",
+  "required": ["traceId", "agentVersion", "components", "handoff"],
+  "properties": {
+    "traceId":      { "type": "string" },
+    "agentVersion": { "type": "string", "example": "magic@2.1.0" },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "path", "exports", "testId"],
+        "properties": {
+          "name":       { "type": "string", "example": "HeroSection" },
+          "path":       { "type": "string", "example": "src/ui/sections/HeroSection.tsx" },
+          "exports":    { "type": "array", "items": { "type": "string" } },
+          "testId":     { "type": "string", "example": "hero-section" },
+          "peerDeps":   { "type": "array", "items": { "type": "string" } },
+          "props": {
+            "type": "object",
+            "description": "Flat map of prop name → TypeScript type string"
+          },
+          "reactBitsUsed": { "type": "array", "items": { "type": "string" } },
+          "hasPhysics": { "type": "boolean" },
+          "has3D":      { "type": "boolean" }
+        }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": { "type": "object", "properties": { "component": { "type": "string" }, "message": { "type": "string" } } }
+    },
+    "handoff": { "type": "string", "enum": ["architect", "test", "a11y", "human"] }
+  }
+}

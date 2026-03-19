@@ -1,0 +1,403 @@
+openapi: 3.1.0
+info:
+  title: GPT GitHub Middleware API
+  version: 1.1.0
+  description: Fastify middleware service that exposes allowlisted GitHub repository operations for GPT Actions.
+servers:
+  - url: https://gpt.asherlewis.uk
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API token
+  schemas:
+    RepoTargetFields:
+      type: object
+      properties:
+        owner:
+          type: string
+          description: Optional repository owner. Must be paired with repo and must be allowlisted.
+        repo:
+          type: string
+          description: Optional repository name. Must be paired with owner and must be allowlisted.
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - service
+        - time
+      properties:
+        status:
+          type: string
+          example: ok
+        service:
+          type: string
+          example: gpt-github-middleware
+        time:
+          type: string
+          format: date-time
+    RepoTreeResponse:
+      type: object
+      required:
+        - owner
+        - repo
+        - ref
+        - path
+        - recursive
+        - count
+        - tree
+      properties:
+        owner:
+          type: string
+        repo:
+          type: string
+        ref:
+          type: string
+        path:
+          type: string
+        recursive:
+          type: boolean
+        count:
+          type: integer
+        tree:
+          type: array
+          items:
+            type: object
+            properties:
+              path:
+                type: string
+              mode:
+                type: string
+              type:
+                type: string
+              sha:
+                type: string
+              size:
+                type: integer
+              url:
+                type: string
+                format: uri
+    RepoFileResponse:
+      type: object
+      required:
+        - owner
+        - repo
+        - ref
+        - file
+      properties:
+        owner:
+          type: string
+        repo:
+          type: string
+        ref:
+          type: string
+        file:
+          type: object
+          required:
+            - path
+            - sha
+            - size
+            - content
+            - encoding
+          properties:
+            path:
+              type: string
+            sha:
+              type: string
+            size:
+              type: integer
+            content:
+              type: string
+            encoding:
+              type: string
+              example: utf-8
+            htmlUrl:
+              type:
+                - string
+                - "null"
+              format: uri
+            downloadUrl:
+              type:
+                - string
+                - "null"
+              format: uri
+    BranchCreateRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - branch
+      allOf:
+        - $ref: "#/components/schemas/RepoTargetFields"
+        - type: object
+          properties:
+            branch:
+              type: string
+            from:
+              type: string
+    FilesUpsertRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - branch
+        - path
+        - content
+        - message
+      allOf:
+        - $ref: "#/components/schemas/RepoTargetFields"
+        - type: object
+          properties:
+            branch:
+              type: string
+            path:
+              type: string
+            content:
+              type: string
+            message:
+              type: string
+            sha:
+              type:
+                - string
+                - "null"
+            encoding:
+              type: string
+              enum:
+                - utf-8
+                - base64
+    PullRequestOpenRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - head
+        - title
+      allOf:
+        - $ref: "#/components/schemas/RepoTargetFields"
+        - type: object
+          properties:
+            head:
+              type: string
+            base:
+              type: string
+            title:
+              type: string
+            body:
+              type: string
+            draft:
+              type: boolean
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+        details:
+          description: Optional validation or upstream error details.
+security:
+  - bearerAuth: []
+paths:
+  /health:
+    get:
+      security: []
+      summary: Health check
+      operationId: getHealth
+      responses:
+        "200":
+          description: Service is healthy.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+  /repo/tree:
+    get:
+      summary: List repository tree entries
+      operationId: getRepoTree
+      parameters:
+        - in: query
+          name: owner
+          schema:
+            type: string
+          description: Optional repository owner. Must be paired with repo and must be allowlisted.
+        - in: query
+          name: repo
+          schema:
+            type: string
+          description: Optional repository name. Must be paired with owner and must be allowlisted.
+        - in: query
+          name: ref
+          schema:
+            type: string
+          description: Branch, tag, or commit SHA. Defaults to the configured default branch.
+        - in: query
+          name: path
+          schema:
+            type: string
+          description: Optional path prefix to filter the returned tree.
+        - in: query
+          name: recursive
+          schema:
+            type: boolean
+            default: false
+      responses:
+        "200":
+          description: Repository tree response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RepoTreeResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Repository target is not allowlisted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /repo/file:
+    get:
+      summary: Fetch a repository file
+      operationId: getRepoFile
+      parameters:
+        - in: query
+          name: owner
+          schema:
+            type: string
+          description: Optional repository owner. Must be paired with repo and must be allowlisted.
+        - in: query
+          name: repo
+          schema:
+            type: string
+          description: Optional repository name. Must be paired with owner and must be allowlisted.
+        - in: query
+          name: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: ref
+          schema:
+            type: string
+      responses:
+        "200":
+          description: File contents response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RepoFileResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Repository target is not allowlisted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: File not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /branch/create:
+    post:
+      summary: Create a non-main branch
+      operationId: createBranch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BranchCreateRequest"
+      responses:
+        "201":
+          description: Branch created.
+        "400":
+          description: Invalid request or write attempted to a protected branch.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Repository target is not allowlisted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /files/upsert:
+    post:
+      summary: Create or update a file on a non-main branch
+      operationId: upsertFile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilesUpsertRequest"
+      responses:
+        "200":
+          description: File updated.
+        "201":
+          description: File created.
+        "400":
+          description: Invalid request or write attempted to a protected branch.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Repository target is not allowlisted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /pr/open:
+    post:
+      summary: Open a pull request from a non-main branch
+      operationId: openPullRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PullRequestOpenRequest"
+      responses:
+        "201":
+          description: Pull request opened.
+        "400":
+          description: Invalid request or write attempted to a protected branch.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Repository target is not allowlisted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"

@@ -1,0 +1,11 @@
+{
+  "name": "build-runner",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "tsx runner.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2"
+  }
+}
