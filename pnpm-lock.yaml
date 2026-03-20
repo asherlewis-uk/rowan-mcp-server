@@ -14,6 +14,9 @@ importers:
       express:
         specifier: latest
         version: 5.2.1
+      pnpm:
+        specifier: ^10.32.1
+        version: 10.32.1
 
 packages:
 
@@ -284,6 +287,11 @@ packages:
   pkce-challenge@5.0.1:
     resolution: {integrity: sha512-wQ0b/W4Fr01qtpHlqSqspcj3EhBvimsdh0KlHhH8HRZnMsEa0ea2fTULOXOS9ccQr3om+GcGRk4e+isrZWV8qQ==}
     engines: {node: '>=16.20.0'}
+
+  pnpm@10.32.1:
+    resolution: {integrity: sha512-pwaTjw6JrBRWtlY+q07fHR+vM2jRGR/FxZeQ6W3JGORFarLmfWE94QQ9LoyB+HMD5rQNT/7KnfFe8a1Wc0jyvg==}
+    engines: {node: '>=18.12'}
+    hasBin: true
 
   proxy-addr@2.0.7:
     resolution: {integrity: sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==}
@@ -656,6 +664,8 @@ snapshots:
   path-to-regexp@8.3.0: {}
 
   pkce-challenge@5.0.1: {}
+
+  pnpm@10.32.1: {}
 
   proxy-addr@2.0.7:
     dependencies:
